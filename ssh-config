@@ -1,0 +1,6 @@
+Host dianxin
+	HostName ip or hostname
+	User ssh'user
+	Port port(if not default port)
+	PubkeyAuthentication no (only password given)
+	#IdentityFile ~/.ssh/chromium
