@@ -1,19 +1,27 @@
 #!/bin/bash
 
-mkdir ~/repo/$1.git
+currentDir=`pwd`
 
-mkdir $2
+if [ -d "repo/$1.git" ]; then
+    echo "repository is exists"
+    exit
+else 
+    mkdir repo/$1.git
+fi
 
-pushd ~/repo/$1.git
+mkdir $2/$1
+
+pushd repo/$1.git
 
 git init --bare
 git config core.bare false
-git config core.worktree $2
+git config core.worktree $2/$1
 git config receive.denyCurrentBranch ignore
 
-cp post-receive ~/repo/$1.git/hooks/post-receive
+cp $currentDir/post-receive $currentDir/repo/$1.git/hooks/post-receive
 
-sudo chmod a+x ~/repo/$1.git/hooks/post-receive
+sudo chmod a+x $currentDir/repo/$1.git/hooks/post-receive
 popd
 
+echo 'The git repository is created.'
 echo 'done'
