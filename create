@@ -2,11 +2,64 @@
 
 currentDir=`pwd`
 
+if [ "$1" == "--help"]; then 
+   echo "first parameters is repository name"
+   echo "sencond parameters is parent work directory"
+   echo "./create repository_name parent work directory"
+   exit
+fi
+
 if [ -d "repo/$1.git" ]; then
-    echo "repository is exists"
+    echo "the repository repo/$1.git already exist"
     exit
-else 
-    mkdir repo/$1.git
+fi
+
+if [ ! -n "$2" ]; then
+  echo "second parameters are missing"
+  exit
+fi
+
+if [ ! -d "$2" ]; then
+    echo "the parent work directory not exists"
+    exit
+fi
+
+if [ -d "$2/$1" ];then
+   echo "the work directory already exist"
+   exit
+fi
+
+mkdir repo/$1.git
+
+mkdir $2/$1
+
+pushd repo/$1.git
+
+git init --bare
+git config core.bare false
+git config core.worktree $2/$1
+git config receive.denyCurrentBranch ignore
+
+cp $currentDir/post-receive $currentDir/repo/$1.git/hooks/post-receive
+
+sudo chmod a+x $currentDir/repo/$1.git/hooks/post-receive
+popd
+
+echo 'The git repository is created.'
+echo 'done'
+
+"
+  exit
+fi
+
+if [ ! -d "$2" ]; then
+    echo "the parent work directory not exists"
+    exit
+fi
+
+if [ -d "$2/$1" ];then
+   echo "the work directory already exist"
+   exit
 fi
 
 mkdir $2/$1
@@ -25,3 +78,4 @@ popd
 
 echo 'The git repository is created.'
 echo 'done'
+
