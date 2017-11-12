@@ -48,34 +48,3 @@ popd
 echo 'The git repository is created.'
 echo 'done'
 
-"
-  exit
-fi
-
-if [ ! -d "$2" ]; then
-    echo "the parent work directory not exists"
-    exit
-fi
-
-if [ -d "$2/$1" ];then
-   echo "the work directory already exist"
-   exit
-fi
-
-mkdir $2/$1
-
-pushd repo/$1.git
-
-git init --bare
-git config core.bare false
-git config core.worktree $2/$1
-git config receive.denyCurrentBranch ignore
-
-cp $currentDir/post-receive $currentDir/repo/$1.git/hooks/post-receive
-
-sudo chmod a+x $currentDir/repo/$1.git/hooks/post-receive
-popd
-
-echo 'The git repository is created.'
-echo 'done'
-
