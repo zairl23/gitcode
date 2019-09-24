@@ -2,7 +2,7 @@
 
 currentDir=`pwd`
 
-if [ "$1" == "--help"]; then 
+if [ "$1" == "--help" ]; then 
    echo "first parameters is repository name"
    echo "sencond parameters is parent work directory"
    echo "./create repository_name parent work directory"
